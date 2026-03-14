@@ -211,4 +211,3 @@ function concat(a, b) {
     return a + b;
 }
 console.log(concat('Hello, ', 'World!'));
-//# sourceMappingURL=app.js.map
