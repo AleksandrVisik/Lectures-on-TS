@@ -8,4 +8,3 @@ function logId(id) {
 logId(1);
 logId("Hello");
 logId(true);
-//# sourceMappingURL=app.js.map
