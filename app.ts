@@ -166,3 +166,216 @@ function testPass(user: UserPro) {
 function test(param?: string) {
 	const t = param ?? multiply(5);
 }
+
+// ========Упражнение. Типизировать ответ сервера.
+// // Запрос в виде платежа
+// {
+//     "sum": 10000,
+//     "from": 2,
+//     "to": 4
+// }
+// // Ответ
+// {
+//     "status": "success",
+//     "data": {
+//         "databaseId": 567,
+//         "sum": 10000,
+//         "from": 2,
+//         "to": 4
+//     }
+// },
+// {
+//     "status": "failed",
+//     "data": {
+//         "errorMessage": "Недостаточно средств",
+//         "errorCode": 4
+//     }
+// }
+
+// +++++++++++++Решение+++++++++++
+
+interface IPayment {
+	sum: number;
+	from: number;
+	to: number;
+}
+
+enum PaymentStatus {
+	Success = "success",
+	Failed = "failed",
+}
+interface IPaymentRequest extends IPayment {
+
+}
+
+interface IDataSuccess extends IPayment {
+	databaseId: number;
+}
+
+interface IDataFailed {
+	errorMessage: string;
+	errorCode: number;
+}
+interface IResponseSuccess {
+	status: PaymentStatus.Success;
+	data: IDataSuccess
+}
+interface IResponseFailed {
+	status: PaymentStatus.Failed;
+	data: IDataFailed
+}
+
+// =====================Void===================
+// void - функция ни чего не возвращает
+function logId2(id: string | number): void {
+	console.log(id);
+}
+
+const a = logId2(1);
+
+function multiply2(f: number, s?: string) {
+	if (!s){
+		return f * f;
+	}
+}
+
+type voidFunc = () => void;
+const f1: voidFunc = () =>{
+	
+}
+const f2: voidFunc = () =>{
+	return true;
+}
+
+const b = f2() // void
+
+const skills2 = ["Dev", "DevOps"];
+const user = {
+	s: ["s"]
+}
+skills2.forEach((skill) => user.s.push(skill));
+
+// =================Unknow============
+let input: unknown;
+input =3;
+input = ["sd", "sp"];
+
+function run(i: unknown) {
+	if (typeof i == "number") {
+		i++;
+	}else {
+		i
+	}
+}
+run(input)
+
+async function getData() {
+	try {
+		fetch("");
+	} catch(error) {
+		if (error instanceof Error) // явная проверка
+	console.log(error.message);
+	}
+}
+
+async function getDataForce() {
+	try {
+		fetch("");
+	} catch(error) {
+		const e = error as Error;
+		console.log(e.message);
+	}
+}
+
+type U1 = unknown | number;
+
+type I1 = unknown & string;
+
+// =====================Never===========================
+// never - никогда не будет присвоено
+function genereateError(message: string): never {
+	throw new Error(message);
+}
+
+function dumpError(): never {
+	while (true) {
+	}
+}
+
+function rec() {
+	return rec();
+}
+
+type paymentAction = "refund" | "checkout" | "reject"
+
+function processAction(action: paymentAction) {
+	switch (action) {
+		case "refund":
+			//....
+			break;
+		case 'checkout':
+			//......
+			break;
+		case 'reject':
+			//......
+			break;
+		default:
+			const _: never = action;
+			throw new Error ("Нет такого action");
+	}
+}
+
+function isString(x: string | number): boolean {
+	if (typeof x === "string") {
+		return true;
+	} else if (typeof x === "number"){
+		return false;
+	}
+	genereateError("kfkfjf");
+}
+
+// ===================Null================================
+
+const n: null = null;
+const n1: any = null;
+
+// ===========================Привидение типов=====================
+
+let c = 5;
+let v: string = c.toString();
+let e: string = new String(c).valueOf(); // string
+let f: boolean = new Boolean(c).valueOf(); // boolean
+
+
+let q = "dhhd";
+let y: number = parseInt(q); // явно приобразовали сторку в число.
+
+interface User9 {
+	name: string;
+	email: string;
+	login: string;
+}
+
+const user5: User9 = {
+	name: "Вася",
+	email: "vasya@ya.ru",
+	login: "vasay"
+}
+
+interface Admin {
+	name: string;
+	role: number
+}
+const admin: Admin = {
+	...user5,
+	role: 1
+}
+
+
+function userToAdmin(user: User): Admin {
+	return {
+		name: user.name,
+		role: 1
+	}
+	
+}
