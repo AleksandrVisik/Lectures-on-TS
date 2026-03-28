@@ -379,3 +379,123 @@ function userToAdmin(user: User): Admin {
 	}
 	
 }
+
+// =====================================Type Guard=========================
+
+// TypeGuards - это механизмы в TypeScript, позволяющие уточнить типы в условных блоках кода, так чтобы TypeScript понимал, какой тип данных используется. Это позволяет более безопасно работать с разными типами данных в одной области видимости.
+
+interface User10 {
+	name: string;
+	email: string;
+	login: string;
+}
+
+const user10: User10 = {
+	name: "Вася",
+	email: "vasya@ya.ru",
+	login: "vasay"
+}
+
+interface Admin5 {
+	name: string;
+	role: number
+}
+const admin5: Admin5 = {
+	...user5,
+	role: 1
+}
+
+function logId5 (id: string | number) {
+	if (isString5(id)) {
+		console.log(id);
+	} else {
+		console.log(id);
+	}
+}
+
+function isString5(x: string | number): x is string {
+	return typeof x === "string";
+}
+
+function isAdmin(user: User10 | Admin5): user is Admin5 {
+	return "role" in user10;
+}
+function isAdminAltarnative(user: User10 | Admin5): user is Admin5 {
+	return (user as Admin5).role !== undefined;
+}
+
+function setRoleZero(user: User10 | Admin5) {
+if (isAdmin(user10)){
+	user10.role = 0;
+} else {
+	throw new Error("Пользователь не админ");
+}	
+}
+
+// =================Упражнение - typeguard ответа==================
+interface IPayment {
+    sum: number;
+    from: number;
+    to: number;
+}
+
+enum PaymentStatus {
+    Success1 = 'success',
+    Failed1 = 'failed',
+}
+
+interface IPaymentRequest extends IPayment { }
+
+interface IDataSuccess extends IPayment {
+    databaseId: number;
+}
+
+interface IDataFailed {
+    errorMessage: string;
+    errorCode: number;
+}
+
+interface IResponseSuccess {
+    status: PaymentStatus.Success;
+    data: IDataSuccess;
+}
+
+interface IResponseFailed {
+    status: PaymentStatus.Failed;
+    data: IDataFailed;
+}
+type f = (res: IResponseSuccess | IResponseFailed) => number;
+type Res = IResponseSuccess | IResponseFailed;
+
+function isSuccess(res: Res): res is IResponseSuccess {
+	if(res.status === PaymentStatus.Success1){
+		return true;
+	}
+	return false;
+}
+function  getIdFromData(res: Res): number {
+	if(isSuccess(res)){
+		return res.data.databaseId
+	} else {
+		throw new Error(res.data.errorMessage);
+	}
+}
+
+
+// ===================================Asserts============================
+// В JavaScript и TypeScript, assert - это специальные функции, предназначенные для проверки условий при выполнении кода. Если проверяемое условие не выполняется, функция генерирует ошибку.
+
+interface User20 {
+	name: string;
+}
+
+const z = {};
+assertUser(z)
+	z.name = "Вася";
+
+function assertUser(obj: unknown): asserts obj is User20 {
+	if (typeof obj === "object" && !!obj && "name" in obj){
+		return;
+	}
+	throw new Error("Не пользователь");
+}

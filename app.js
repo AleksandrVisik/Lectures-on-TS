@@ -204,3 +204,64 @@ function userToAdmin(user) {
         role: 1
     };
 }
+const user10 = {
+    name: "Вася",
+    email: "vasya@ya.ru",
+    login: "vasay"
+};
+const admin5 = {
+    ...user5,
+    role: 1
+};
+function logId5(id) {
+    if (isString5(id)) {
+        console.log(id);
+    }
+    else {
+        console.log(id);
+    }
+}
+function isString5(x) {
+    return typeof x === "string";
+}
+function isAdmin(user) {
+    return "role" in user10;
+}
+function isAdminAltarnative(user) {
+    return user.role !== undefined;
+}
+function setRoleZero(user) {
+    if (isAdmin(user10)) {
+        user10.role = 0;
+    }
+    else {
+        throw new Error("Пользователь не админ");
+    }
+}
+(function (PaymentStatus) {
+    PaymentStatus["Success1"] = "success";
+    PaymentStatus["Failed1"] = "failed";
+})(PaymentStatus || (PaymentStatus = {}));
+function isSuccess(res) {
+    if (res.status === PaymentStatus.Success1) {
+        return true;
+    }
+    return false;
+}
+function getIdFromData(res) {
+    if (isSuccess(res)) {
+        return res.data.databaseId;
+    }
+    else {
+        throw new Error(res.data.errorMessage);
+    }
+}
+const z = {};
+assertUser(z);
+z.name = "Вася";
+function assertUser(obj) {
+    if (typeof obj === "object" && !!obj && "name" in obj) {
+        return;
+    }
+    throw new Error("Не пользователь");
+}
